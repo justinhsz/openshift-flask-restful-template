@@ -1,6 +1,6 @@
 from flask_restplus import Api
 
-from .time import api as time
+from .time import time_api
 
 api = Api(
     title='Basic API',
@@ -8,4 +8,4 @@ api = Api(
     description='A set of API',
 )
 
-api.add_namespace(time)
+api.add_namespace(time_api)
