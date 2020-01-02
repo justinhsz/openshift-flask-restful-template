@@ -1,0 +1,20 @@
+# Environment variables
+
+UPGRADE_PIP_TO_LATEST=TRUE
+APP_CONFIG=configs/production.py
+
+# Execution Strategy: Execute by following precedence order.
+
+# 1. Gunicorn
+# Search "wsgi.py" from repo or specified by
+
+# APP_MODULE=MODULE_NAME:VARIABLE_NAME
+
+# 2. Python Script
+
+# APP_FILE=app.py
+
+# 3. Shell Script
+
+# APP_SCRIPT=app.sh
+
