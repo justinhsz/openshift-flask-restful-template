@@ -10,3 +10,7 @@ def create_app():
 
 
 application = create_app()
+
+if __name__ == '__main__':
+    application.run('127.0.0.1', 8080, debug=True)
+    pass
