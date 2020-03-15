@@ -19,6 +19,7 @@ openshift-flask-template  # Project name
 │   └── connection.py     # The feature related with server/RDB connection. 
 ├── nginx.conf            # [Optional] If you want to deploy with nginx, this file can help you.
 ├── requirements.txt      # List required packages.
+├── template.yaml         # The template to help you to deploy the application to openshift without pain in first time.
 └── wsgi.py               # Entry point for the project
 ```
 
@@ -44,10 +45,10 @@ openshift-flask-template  # Project name
     gunicorn -c configs/production.py -b 0.0.0.0:8080 wsgi application
     ```
 
-## Deployment on OpenShift
+## Support Images
 There're 2 images can help you to deploy your application easily.
- 
-### OpenShift's Python image
+
+### OpenShift Official Python image
 OpenShift offers a Python image which support deploy pthon code or Django application.
 You can just select the ```python template``` from OpenShift console and given this git repo.
 And everything should work fine.
@@ -55,9 +56,33 @@ And everything should work fine.
 
 ### A predefined Python-Nginx image
 If you want to make the web application work behind Nginx as a single application on OpenShift, you can follow by [the repo](https://github.com/justinhsz/image-bank/tree/master/python/nginx) to build your own.
+The image spec:
  * Gunicorn port: 8081
- * Nginx port: 8080  
+ * Nginx port: 8080
 
-If you already have a application which is using OpenShift Python image, change the base image to this new one can even work fine.
+If you already have an application which is using OpenShift Python image, change the base image to this new one can even work fine.
 
 I also provide a Django example with SimpleUI for this customized image, you should refer to [the repo](https://github.com/justinhsz/openshift-django-simpleui).
+
+## Deployment on OpenShift
+After you choose the following image that you want, you can use template file to help you deploy your application to openshift.
+There's two options to use template file. Just chooes the one you like and try it.
+
+### Deploy by Openshift console
+  1. On ```Browse Catalog``` page, choose ```Import YAML / JSON``` (It may hide in ```Custom Add```drop down list).
+  2. Choose the template file and then it'll show you what parameters that you should fill in. Note that, label ```app``` need to fill in by yourself.
+  
+### Deploy by Openshift Cli
+```bash
+# Show all parameters
+oc process --parameters -f template.yaml
+
+# Swich to the project that you want to add new application
+oc project <your_project_name>
+
+# Add applicaiton to the project
+oc new-app -f template.yaml -p NAME=<your_application_name>
+
+# Show the progress for the build and the deployment
+oc logs -f bc/<your_application_name>
+``` 

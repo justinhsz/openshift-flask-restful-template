@@ -4,13 +4,13 @@ metadata:
   name: python-nginx-template
 labels:
   template: python-nginx-template
-  app: python-nginx-template
+  app: "${NAME}"
 message: "The following service(s) have been created in your project: ${NAME}."
 parameters:
   - name: NAME 
     displayName: Name
     description: The name assigned to all of the frontend objects defined in this template.
-    value: python-nginx-template
+  #  value: python-nginx-template
     required: true 
   # - name: NAMESPACE 
   #   displayName: Namespace
