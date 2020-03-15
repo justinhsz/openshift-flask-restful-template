@@ -5,7 +5,7 @@ metadata:
 labels:
   template: python-nginx-template
   app: python-nginx-template
-message: "The following service(s) have been created in your project: ${NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/sclorg/django-ex/blob/master/README.md." 
+message: "The following service(s) have been created in your project: ${NAME}."
 parameters:
   - name: NAME 
     displayName: Name
@@ -58,15 +58,23 @@ parameters:
     displayName: Application Hostname
     description: The exposed hostname that will route to the Django service, if left blank a value will be defaulted.
     value: ""
-  # - name: ACCESS_KEY
-  #   displayName: Application Hostname
-  #   description: The exposed hostname that will route to the Django service, if left blank a value will be defaulted.
-  #   value: ""
-  # - name: ACCESS_SECRET
-  #   displayName: Application Hostname
-  #   description: The exposed hostname that will route to the Django service, if left blank a value will be defaulted.
-  #   value: ""
+  - name: CREDENTIAL_SERVER_ACCESS_KEY
+    displayName: Credential Server Access Key
+    description: (Optional) The key for accessing credential server to get the credential.
+    value: ""
+  - name: CREDENTIAL_SERVER_ACCESS_SECRET
+    displayName: Credential Server Access Secret
+    description: (Optional) The secret for accessing credential server to get the credential.
+    value: ""
 objects:
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${NAME}-application-secrets"
+    type: Opaque
+    stringData:
+      key: "${CREDENTIAL_SERVER_ACCESS_KEY}"
+      secret: "${CREDENTIAL_SERVER_ACCESS_SECRET}"
   - kind: Service
     apiVersion: v1
     metadata: 
@@ -131,7 +139,7 @@ objects:
     metadata:
       name: "${NAME}"
     spec:
-      strategy: 
+      strategy:
         type: Rolling
       triggers:
         - type: ImageChange
@@ -143,7 +151,7 @@ objects:
               kind: ImageStreamTag
               name: "${NAME}:latest"
         - type: ConfigChange
-      replicas: "${{REPLICA_COUNT}}" 
+      replicas: "${{REPLICA_COUNT}}"
       selector:
         name: "${NAME}"
       template:
@@ -151,7 +159,7 @@ objects:
           name: "${NAME}"
           labels:
             name: "${NAME}"
-        spec: 
+        spec:
           containers:
             - name: "${NAME}"
               image: " "
@@ -166,12 +174,23 @@ objects:
               livenessProbe:
                 timeoutSeconds: 3
                 initialDelaySeconds: 30
-                httpGet: 
+                httpGet:
                   path: /
                   port: 8080
-              # env: 
+              # env:
               #   - name: APP_CONFIG
               #     value: "${APP_CONFIG}"
               resources:
                 limits:
                   memory: "${MEMORY_LIMIT}"
+              env:
+                - name: CREDENTIAL_SERVER_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${NAME}-application-secrets"
+                      key: key
+                - name: CREDENTIAL_SERVER_ACCESS_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${NAME}-application-secrets"
+                      key: secret
