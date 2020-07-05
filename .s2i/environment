@@ -16,6 +16,7 @@ UPGRADE_PIP_TO_LATEST=TRUE
 # Search "wsgi.py" from repo or specified by
 
 # APP_MODULE=MODULE_NAME:VARIABLE_NAME
+APP_MODULE=wsgi:application
 APP_CONFIG=configs/production.py
 
 
