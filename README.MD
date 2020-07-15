@@ -46,7 +46,7 @@ openshift-flask-template  # Project name
     ```
 
 ## Support Images
-There're 2 images can help you to deploy your application easily.
+The following images can help you to deploy your application easily.
 
 ### OpenShift Official Python image
 OpenShift offers a Python image which support deploy pthon code or Django application.
@@ -54,7 +54,7 @@ You can just select the ```python template``` from OpenShift console and given t
 And everything should work fine.
  * Default port: 8080
 
-### A predefined Python-Nginx image
+### Predefined Python-Nginx image
 If you want to make the web application work behind Nginx as a single application on OpenShift, you can follow by [the repo](https://github.com/justinhsz/image-bank/tree/master/python/nginx) to build your own.
 The image spec:
  * Gunicorn port: 8081
@@ -63,6 +63,10 @@ The image spec:
 If you already have an application which is using OpenShift Python image, change the base image to this new one can even work fine.
 
 I also provide a Django example with SimpleUI for this customized image, you should refer to [the repo](https://github.com/justinhsz/openshift-django-simpleui).
+
+### Conda base image
+To start with conda, you can choose [conda-base image](https://github.com/justinhsz/image-bank/tree/master/python/conda-base).
+This template also support to work with vscode container extension to use the base image to do the development.
 
 ## Deployment on OpenShift
 After you choose the following image that you want, you can use template file to help you deploy your application to openshift.
