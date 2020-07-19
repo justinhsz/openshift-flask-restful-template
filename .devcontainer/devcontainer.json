@@ -20,12 +20,16 @@
     // An array port numbers to forward
     "forwardPorts": [8080,8443],
 
-    "postStartCommand": "/opt/conda/bin/conda init && source .bashrc",
+    "postStartCommand": "export ENABLE_DEVL_MODE=true && export $(grep -v '^#' /opt/app-root/src/.s2i/environment | xargs) && /usr/libexec/s2i/assemble",
+
+    "postAttachCommand": "source ~/.bashrc && conda activate $TARGET_CONDA_ENV",
   
     // Container user VS Code should use when connecting
     // Use 'root' to prevent unable to install vscode server on the container, especially for s2i builder image. 
     "remoteUser": "root",
   
     // Set environment variables for VS Code and sub-processes
-    "remoteEnv": { "MY_VARIABLE": "some-value" }
+    "remoteEnv": { 
+      "ENABLE_DEVL_MODE": "true"
+    }
   }
