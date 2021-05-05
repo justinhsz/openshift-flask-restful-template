@@ -1,5 +1,9 @@
 # Environment variables
 
+# The dependency file for conda-base image to identified requiremnt file (.txt) or environment file (.yml).
+CONDA_DEPENDENCY_FILE=environment.yml
+
+# For OpenShift python builder image to identified the necessary of updating pip version.
 UPGRADE_PIP_TO_LATEST=TRUE
 
 # Execution Strategy: Execute by following precedence order.
@@ -16,7 +20,5 @@ UPGRADE_PIP_TO_LATEST=TRUE
 # Search "wsgi.py" from repo or specified by
 
 # APP_MODULE=MODULE_NAME:VARIABLE_NAME
+APP_MODULE=wsgi:application
 APP_CONFIG=configs/production.py
-
-
-

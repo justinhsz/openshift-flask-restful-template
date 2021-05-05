@@ -1,0 +1,35 @@
+{
+    "name": "conda-base",
+    "context": "..",
+    "image": "conda-base",
+
+    // Default path to open when attaching to a new container.
+    "workspaceMount": "source=${localWorkspaceFolder},target=/opt/app-root/src,type=bind,consistency=cached",
+    "workspaceFolder": "/opt/app-root/src",
+  
+    // An array of extension IDs that specify the extensions to
+    // install inside the container when you first attach to it.
+    // "extensions": ["ms-python.python"],
+  
+    // Any *default* container specific VS Code settings
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "terminal.integrated.scrollback": 999999
+    },
+  
+    // An array port numbers to forward
+    "forwardPorts": [8080,8443],
+
+    "postStartCommand": "export ENABLE_DEVL_MODE=true && export $(grep -v '^#' /opt/app-root/src/.s2i/environment | xargs) && /usr/libexec/s2i/assemble",
+
+    "postAttachCommand": "source ~/.bashrc && conda activate $TARGET_CONDA_ENV",
+  
+    // Container user VS Code should use when connecting
+    // Use 'root' to prevent unable to install vscode server on the container, especially for s2i builder image. 
+    "remoteUser": "root",
+  
+    // Set environment variables for VS Code and sub-processes
+    "remoteEnv": { 
+      "ENABLE_DEVL_MODE": "true"
+    }
+  }
