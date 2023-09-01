@@ -1,5 +1,5 @@
 import pytz
-from flask_restplus import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields
 from datetime import datetime
 from dateutil import zoneinfo
 
