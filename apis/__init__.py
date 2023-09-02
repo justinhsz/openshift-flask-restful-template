@@ -1,6 +1,7 @@
 from flask_restx import Api
 
 from .time import time_api
+from .content import content_api
 
 api = Api(
     title='Basic API',
@@ -9,3 +10,4 @@ api = Api(
 )
 
 api.add_namespace(time_api)
+api.add_namespace(content_api)
